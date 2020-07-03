@@ -4,15 +4,13 @@ import org.jfugue.player.Player;
 import org.jfugue.theory.Chord;
 import org.jfugue.theory.Note;
 
-import java.util.Arrays;
-
 public class BassLine {
 
     private static Player player = new Player();
 
-    private static String[] getBasslineForMeasure(Measure measure) {
-        System.out.println("Getting a bass line for the measure " + measure + "...");
-        Note[] notes = measure.getChords()[0].getNotes();
+    private static String[] getBasslineForBar(Bar bar) {
+        System.out.println("Getting a bass line for the bar " + bar + "...");
+        Note[] notes = bar.getChords()[0].getNotes();
         String[] bassNotes = new String[notes.length];
 
         for (int i = 0; i < notes.length; i++) {
@@ -22,35 +20,35 @@ public class BassLine {
         return bassNotes;
     }
 
-    private static Measure[] parseSheet(String sheet) {
-        String[] measuresString = sheet.split(" \\| ");
+    private static Bar[] parseSheet(String sheet) {
+        String[] barsString = sheet.split(" \\| ");
 
-        Measure[] measures = new Measure[measuresString.length];
+        Bar[] bars = new Bar[barsString.length];
 
-        for (int i = 0; i < measuresString.length; i++) {
-            String[] chordsString = measuresString[i].split(" ");
+        for (int i = 0; i < barsString.length; i++) {
+            String[] chordsString = barsString[i].split(" ");
             Chord[] chords = new Chord[chordsString.length];
 
             for (int j = 0; j < chords.length; j++) {
                 chords[j] = new Chord(chordsString[j]);
             }
 
-            String[] nextChordsString = (i == measuresString.length - 1) ? null : measuresString[i + 1].split(" ");
+            String[] nextChordsString = (i == barsString.length - 1) ? null : barsString[i + 1].split(" ");
 
             Note nextNote = (nextChordsString == null) ? null : new Chord(nextChordsString[0]).getBassNote();
-            measures[i] = new Measure(chords, nextNote);
+            bars[i] = new Bar(chords, nextNote);
         }
 
-        return measures;
+        return bars;
     }
 
     private static void playBassline(String sheet) {
         StringBuilder stringBuilder = new StringBuilder("V0 I[ELECTRIC_BASS_FINGER] ");
 
-        Measure[] measures = parseSheet(sheet);
+        Bar[] bars = parseSheet(sheet);
 
-        for (Measure measure : measures) {
-            String[] notes = getBasslineForMeasure(measure);
+        for (Bar bar : bars) {
+            String[] notes = getBasslineForBar(bar);
 
             for (String note : notes) {
                 stringBuilder.append(note);

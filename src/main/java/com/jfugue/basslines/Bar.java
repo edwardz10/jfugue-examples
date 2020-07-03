@@ -7,7 +7,7 @@ import org.jfugue.theory.Note;
 
 @Data
 @AllArgsConstructor
-public class Measure {
+public class Bar {
     private Chord[] chords;
     private Note nextNote;
 }
