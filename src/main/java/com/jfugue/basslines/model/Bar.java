@@ -1,4 +1,4 @@
-package com.jfugue.basslines;
+package com.jfugue.basslines.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
