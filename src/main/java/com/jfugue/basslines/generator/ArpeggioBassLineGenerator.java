@@ -1,15 +1,15 @@
 package com.jfugue.basslines.generator;
 
 import com.jfugue.basslines.model.Bar;
-import org.jfugue.theory.Note;
 
-public class ArpeggioBassLineGenerator implements BassLineGenerator {
+public class ArpeggioBassLineGenerator extends BaseBassLineGenerator {
 
     private ArpeggioBassLineGenerator() {}
 
     public static ArpeggioBassLineGenerator INSTANCE;
 
-    public Note[] bassline(Bar bar) {
-        return bar.getChords()[0].getNotes();
+    protected void generateNotes(Bar bar) {
+        notes = bar.getChords()[0].getNotes();
     }
+
 }

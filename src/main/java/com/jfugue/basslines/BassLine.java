@@ -14,7 +14,7 @@ public class BassLine {
 
     private static Player player = new Player();
 
-    private BassLineGenerator getBassLineGenerator(Bar bar) throws Exception {
+    private static BassLineGenerator getBassLineGenerator(Bar bar) throws Exception {
         switch (getBarType(bar)) {
             case TWO_CHORDS:
                 return TwoChordsBassLineGenerator.INSTANCE;
@@ -23,7 +23,7 @@ public class BassLine {
         }
     }
 
-    private BarTypesEnum getBarType(Bar bar) throws Exception {
+    private static BarTypesEnum getBarType(Bar bar) throws Exception {
         if (bar.getChords().length == 2) {
             return BarTypesEnum.TWO_CHORDS;
         }
@@ -72,12 +72,20 @@ public class BassLine {
 
     private static String[] getBasslineForBar(Bar bar) {
         System.out.println("Getting a bass line for the bar " + bar + "...");
-        Note[] notes = bar.getChords()[0].getNotes();
-        String[] bassNotes = new String[notes.length];
+        String[] bassNotes = null;
 
-        for (int i = 0; i < notes.length; i++) {
-            bassNotes[i] = notes[i] + "3q ";
+        try {
+            BassLineGenerator bassLineGenerator = getBassLineGenerator(bar);
+            Note[] notes = bassLineGenerator.bassline(bar);
+        } catch (Exception e) {
+            System.out.println("Failed to get a bass line for bar " + bar + ": " + e.getMessage());
         }
+//        Note[] notes = bar.getChords()[0].getNotes();
+//        String[] bassNotes = new String[notes.length];
+//
+//        for (int i = 0; i < notes.length; i++) {
+//            bassNotes[i] = notes[i] + "3q ";
+//        }
 
         return bassNotes;
     }
@@ -123,7 +131,7 @@ public class BassLine {
 
 
     public static void main(String[] args) {
-        playBassline("Cmaj7 | Amin7 | Dmin7 | Gdom7");
+        playBassline("EMIN7 ADOM7 | Dmin7 GDOM7");
     }
 
 }
