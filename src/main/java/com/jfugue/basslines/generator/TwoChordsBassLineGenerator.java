@@ -1,12 +1,13 @@
 package com.jfugue.basslines.generator;
 
 import com.jfugue.basslines.model.Bar;
+import org.jfugue.theory.Note;
 
 public class TwoChordsBassLineGenerator extends BaseBassLineGenerator {
 
     private TwoChordsBassLineGenerator() {}
 
-    public static TwoChordsBassLineGenerator INSTANCE;
+    public static TwoChordsBassLineGenerator INSTANCE = new TwoChordsBassLineGenerator();
 
     protected void generateNotes(Bar bar) {
         notes[0] = bar.getChords()[0].getBassNote();

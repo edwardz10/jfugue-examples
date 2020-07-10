@@ -10,6 +10,8 @@ import org.jfugue.theory.Chord;
 import org.jfugue.theory.Intervals;
 import org.jfugue.theory.Note;
 
+import java.util.Arrays;
+
 public class BassLine {
 
     private static Player player = new Player();
@@ -77,6 +79,7 @@ public class BassLine {
         try {
             BassLineGenerator bassLineGenerator = getBassLineGenerator(bar);
             Note[] notes = bassLineGenerator.bassline(bar);
+            bassNotes = (String[])Arrays.asList(notes).stream().map(note -> note.toString()).toArray();
         } catch (Exception e) {
             System.out.println("Failed to get a bass line for bar " + bar + ": " + e.getMessage());
         }
@@ -106,7 +109,7 @@ public class BassLine {
             String[] nextChordsString = (i == barsString.length - 1) ? null : barsString[i + 1].split(" ");
 
             Note nextNote = (nextChordsString == null) ? null : new Chord(nextChordsString[0]).getBassNote();
-            bars[i] = new Bar(chords, nextNote);
+            bars[i] = new Bar(chords, nextNote, (i == 0));
         }
 
         return bars;

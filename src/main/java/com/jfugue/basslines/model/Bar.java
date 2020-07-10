@@ -10,4 +10,5 @@ import org.jfugue.theory.Note;
 public class Bar {
     private Chord[] chords;
     private Note nextNote;
+    private boolean first;
 }
