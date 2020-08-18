@@ -3,28 +3,34 @@ package com.jfugue.basslines.generator;
 import com.jfugue.basslines.model.Bar;
 import org.jfugue.theory.Note;
 
+import java.util.List;
+
 public abstract class BaseBassLineGenerator implements BassLineGenerator {
 
-    protected static Note LOWEST_NOTE = new Note("E3");
+    protected static Note LOWEST_NOTE = new Note("E2");
     protected static Note HIGHEST_NOTE = new Note("A5");
 
-    protected Note[] notes;
+    protected abstract List<Note> generateNotes(Bar bar);
 
-    protected abstract void generateNotes(Bar bar);
-
-    public Note[] bassline(Bar bar) {
-        notes = new Note[4];
+    public List<Note> bassline(Bar bar) {
+        List<Note> notes = generateNotes(bar);
 
         generateNotes(bar);
-        doPostGeneration();
+        doPostGeneration(notes, bar);
 
         return notes;
     }
 
-    private void doPostGeneration() {
-        for (Note note : notes) {
-            note.setOriginalString(Note.getDispositionedToneStringWithoutOctave(1, note.getValue()));
-            note.setDuration("q");
+    private void doPostGeneration(List<Note> notes, Bar bar) {
+        for (int i = 0; i < notes.size(); i++) {
+            notes.get(i).setOriginalString(
+                    Note.getDispositionedToneStringWithoutOctave(1, notes.get(i).getValue()));
+
+            if (bar.getNextNote() == null && i == notes.size() - 1) {
+                notes.get(i).setDuration("w");
+            } else {
+                notes.get(i).setDuration("q");
+            }
         }
     }
 
